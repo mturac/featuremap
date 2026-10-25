@@ -1,0 +1,14 @@
+{
+  "name": "featuremap",
+  "version": "0.1.0",
+  "description": "Generate a machine-readable map of an app's features (route → selectors → purpose) so agents can drive and verify the app.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "featuremap": "bin/featuremap.js" },
+  "files": ["bin", "src"],
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "vitest run", "demo": "node demo/server.js" },
+  "dependencies": { "playwright": "^1.48.0", "tsx": "^4.19.0" },
+  "devDependencies": { "vitest": "^2.1.0", "typescript": "^5.6.0", "@types/node": "^20.0.0" },
+  "keywords": ["agent","playwright","feature-map","cli","typescript","testing"]
+}
