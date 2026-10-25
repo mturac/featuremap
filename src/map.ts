@@ -46,7 +46,7 @@ async function collect(page: Page): Promise<{ elements: Element[]; links: string
 export async function init(startUrl: string, maxPages = 30): Promise<FeatureMap> {
   const origin = new URL(startUrl).origin;
   const browser = await chromium.launch();
-  const page = await browser.newPage();
+  const page = await browser.newPage(); await page.addInitScript('globalThis.__name = (f) => f');
   const seen = new Set<string>(); const queue = [startUrl]; const routes: Route[] = [];
   try {
     while (queue.length && routes.length < maxPages) {
@@ -81,7 +81,7 @@ export async function write(m: FeatureMap, dir = '.') {
 export interface Missing { route: string; css: string; name: string; }
 export async function check(file = 'features.json'): Promise<Missing[]> {
   const m: FeatureMap = JSON.parse(await readFile(file, 'utf8'));
-  const browser = await chromium.launch(); const page = await browser.newPage(); const missing: Missing[] = [];
+  const browser = await chromium.launch(); const page = await browser.newPage(); await page.addInitScript('globalThis.__name = (f) => f'); const missing: Missing[] = [];
   try {
     for (const r of m.routes) {
       try { await page.goto(r.url, { waitUntil: 'load' }); } catch { missing.push({ route: r.route, css: '(page)', name: 'unreachable' }); continue; }

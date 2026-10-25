@@ -30,3 +30,17 @@ describe('featuremap', () => {
     expect(miss.some((x) => x.css.includes('checkout'))).toBe(true);
   }, 60000);
 });
+
+import { execFileSync } from 'node:child_process';
+describe('cli', () => {
+  it('init + check via bin exit 0', async () => {
+    const bin = new URL('../bin/featuremap.js', import.meta.url).pathname;
+    const dir = await mkdtemp(join(tmpdir(), 'fm-cli-'));
+    const s: any = await serve(0); const url = `http://localhost:${s.address().port}/`;
+    try {
+      const o = execFileSync('node', [bin, 'init', url], { cwd: dir, encoding: 'utf8' });
+      expect(o).toMatch(/routes/);
+      execFileSync('node', [bin, 'check'], { cwd: dir });
+    } finally { s.close(); }
+  }, 60000);
+});
